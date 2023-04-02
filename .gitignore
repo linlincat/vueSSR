@@ -3,3 +3,6 @@
 
 # Ada Library Information
 *.ali
+
+vue-ssr/node_modules
+
