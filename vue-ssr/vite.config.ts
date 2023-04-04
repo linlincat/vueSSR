@@ -23,15 +23,18 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      "@": resolve(__dirname, "src"), // 路径别名
+      // 路径别名
+      "@": resolve(__dirname, "src"), 
     },
-    extensions: [".js", ".json", ".ts"], // 使用路径别名时想要省略的后缀名，可以自己 增减
+    // 使用路径别名时想要省略的后缀名，可以自己 增减
+    extensions: [".js", ".json", ".ts"], 
   },
   // reprocessOptions
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: '@import "@/assets/scss/variable.scss";',
+        // 全局scss的配置,也可以在根页面中app.vue中全局引入
+        additionalData: '@import "@/assets/scss/variable.scss";', 
       },
     },
   },
