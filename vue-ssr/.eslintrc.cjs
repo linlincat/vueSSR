@@ -6,12 +6,16 @@ module.exports = {
   },
   extends: [
     'plugin:vue/vue3-essential',
-    'standard-with-typescript'
+    '@vue/standard'
+    // Adjacent JSX elements must be wrapped in an enclosing tag 添加 下方注释代码报错
+    // 'standard-with-typescript'
   ],
   overrides: [
   ],
+  // parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 'latest',
+    parser: 'babel-eslint',
     sourceType: 'module'
   },
   plugins: [

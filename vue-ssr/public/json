@@ -1,0 +1,37 @@
+{
+  "data" : {
+      "success":200,
+      "shuju":[
+          {
+              "name":"薯片",
+              "value":300,
+              "count":0,
+              "img":"http://img.kaiyanapp.com/ba7172ad70e0d334b6247f48d1ee253a.jpeg"
+          },
+          {
+              "name":"牛奶",
+              "value":200,
+              "count":0,
+              "img":"http://img.kaiyanapp.com/ba7172ad70e0d334b6247f48d1ee253a.jpeg"
+          },
+          {
+              "name":"花生",
+              "value":140,
+              "count":0,
+              "img":"http://img.kaiyanapp.com/ba7172ad70e0d334b6247f48d1ee253a.jpeg"
+          },
+          {
+              "name":"小鸡炖蘑菇",
+              "value":120,
+              "count":0,
+              "img":"http://img.kaiyanapp.com/ba7172ad70e0d334b6247f48d1ee253a.jpeg"
+          },
+          {
+              "name":"辣条",
+              "value":170,
+              "count":0,
+              "img":"http://img.kaiyanapp.com/ba7172ad70e0d334b6247f48d1ee253a.jpeg"
+          }
+      ]
+  }
+}

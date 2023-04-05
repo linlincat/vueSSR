@@ -5,7 +5,8 @@ import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 
 import { resolve } from "path";
-import vue from "@vitejs/plugin-vue";
+import vue from '@vitejs/plugin-vue'
+
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -38,13 +39,4 @@ export default defineConfig({
       },
     },
   },
-
-  // base: "./",
-  // resolve: {
-  //   // 配置别名
-  //   alias: [
-  //     { find: "@", replacement: path.resolve(__dirname, "src") },
-  //     // { find: "@api", replacement: path.resolve(__dirname, "src/api") },
-  //   ],
-  // },
 });

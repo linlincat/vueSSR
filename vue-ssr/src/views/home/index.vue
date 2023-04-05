@@ -1,17 +1,15 @@
 <script setup lang="ts">
+import { apiHomeList } from '@/api/index'
+import { useI18n, } from "vue-i18n";
+apiHomeList()
+const { t } = useI18n()
 </script>
-
 <template>
-  <el-button>klk</el-button>
-  <div class="one-text">sssssssssssssssssssss</div>
-  <button>llll jkk </button>
+  <div>{{ t(`message.home`) }}</div>
 </template>
 
 <style lang="scss" scoped>
-/* .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-} */
 // 将;放到啦“”内部,导致控制台报错找不到文件
 @import "@/assets/scss/home/index.scss";
-
 </style>
+
