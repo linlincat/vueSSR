@@ -1,4 +1,8 @@
-import axios, { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import axios, {
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from "axios";
 
 class Http {
   constructor() {
@@ -12,6 +16,8 @@ class Http {
   // 请求拦截
   private httpInterceptorsRequest() {
     Http.axiosInstance.interceptors.request.use(
+      // 跟版本有关config:AxiosRequestConfig,但是在当前使用的版本中是
+      // InternalAxiosRequestConfig类型,主要是对header的一个类型改写
       (config: InternalAxiosRequestConfig) => {
         return config;
       },
@@ -32,14 +38,14 @@ class Http {
     );
   }
 
-  public httpGet<T>(url: string, params: AxiosRequestConfig):Promise<T> {
+  public httpGet<T>(url: string, params: AxiosRequestConfig): Promise<T> {
     return Http.axiosInstance
       .get(url, params)
       .then((res) => res.data)
       .catch();
   }
 
-  public httpPost<T>(url: string, data: AxiosRequestConfig):Promise<T> {
+  public httpPost<T>(url: string, data: AxiosRequestConfig): Promise<T> {
     return Http.axiosInstance
       .get(url, data)
       .then((res) => res.data)
