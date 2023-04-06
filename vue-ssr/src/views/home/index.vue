@@ -1,49 +1,62 @@
 <script setup lang="ts">
-import { apiHomeList } from '@/api/index'
+import { apiHomeList, fetchE } from '@/api/index'
+import { onMounted } from 'vue';
 import { useI18n, } from "vue-i18n";
 import IndexDB from '../../utils/indexDB'
-apiHomeList()
-const { t } = useI18n()
 
-const db = new IndexDB("demo")
-db.openStore('elephant', 'id', ['nose', 'ear'])
+// 获取indexDBmock数据
+const getE = () => {
+  fetchE().then(res => {
+    console.log(res, 'mock')
+  })
+}
+onMounted(() => {
+  // 本地json请求
+  apiHomeList()
+  getE()
+})
+// 国际化
+const { t } = useI18n()
+// const db = new IndexDB("demo")
+// db.openStore('elephant', 'id', ['nose', 'ear'])
 
 // add 
-const addDB = (storeName: string) => {
-  db.updateItem(
-    storeName, {
-    she: 'nv',
-    he: 'nan'
-  }
-  )
-}
+// const addDB = (storeName: string) => {
+//   db.updateItem(
+//     storeName, {
+//     she: 'nv',
+//     he: 'nan'
+//   }
+//   )
+// }
 // del 
-const delDB = (storeName: string, key: number | string) => {
-  db.deleteItem(
-    storeName, key
-  )
-}
+// const delDB = (storeName: string, key: number | string) => {
+//   db.deleteItem(
+//     storeName, key
+//   )
+// }
 // find
-const findDB = (storeName: string) => {
-  db.getList(
-    storeName
-  )
-}
+// const findDB = (storeName: string) => {
+//   db.getList(
+//     storeName
+//   )
+// }
 // findOne
-const findOneDB = (storeName: string, key: number | string) => {
-  db.getItem(
-    storeName, key
-  )
-}
+// const findOneDB = (storeName: string, key: number | string) => {
+//   db.getItem(
+//     storeName, key
+//   )
+// }
+
 </script>
 <template>
   <div></div>
   <div></div>
   <div></div>
-  <button @click="addDB('elephant')">add</button>
-  <button @click="delDB('elephant', 2)">del</button>
-  <button @click="findDB('elephant')">find</button>
-  <button @click="findOneDB('elephant', 3)">findOne</button>
+  <!-- <button @click="addDB('elephant')">add</button>
+      <button @click="delDB('elephant', 2)">del</button>
+      <button @click="findDB('elephant')">find</button>
+      <button @click="findOneDB('elephant', 3)">findOne</button> -->
   <div>{{ t(`message.home`) }}</div>
 </template>
 
