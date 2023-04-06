@@ -10,6 +10,12 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n'
 const value2 = ref('');
 const locale = ref(zhCn);
+/**
+ * locale是createI18n下的locale
+ * locale.value是修改ele组件内部的国际化
+ * localeLanguage修改的是自定义配置的国际化- 修改locale: "en|zh",
+ * 在通过useI18n获取到message下的对应国际化信息git 
+ */
 const { locale: localeLanguage } = useI18n();
 // function changeLang() {}
 const changeLang = (lang: any) => {
