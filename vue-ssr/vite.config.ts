@@ -5,8 +5,7 @@ import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 
 import { resolve } from "path";
-import vue from '@vitejs/plugin-vue'
-
+import vue from "@vitejs/plugin-vue";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -25,17 +24,18 @@ export default defineConfig({
   resolve: {
     alias: {
       // 路径别名
-      "@": resolve(__dirname, "src"), 
+      "@": resolve(__dirname, "src"),
     },
     // 使用路径别名时想要省略的后缀名，可以自己 增减
-    extensions: [".js", ".json", ".ts"], 
+    extensions: [".js", ".json", ".ts"],
   },
   // reprocessOptions
   css: {
     preprocessorOptions: {
       scss: {
         // 全局scss的配置,也可以在根页面中app.vue中全局引入
-        additionalData: '@import "@/assets/scss/variable.scss";', 
+        additionalData:
+          '@import "@/assets/scss/variable.scss"; @import "@/assets/scss/main.scss";',
       },
     },
   },

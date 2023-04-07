@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import { apiHomeList, fetchE } from '@/api/index'
+
+import { apiHomeList } from '@/api/index'
 import { onMounted } from 'vue';
 import { useI18n, } from "vue-i18n";
 import IndexDB from '../../utils/indexDB'
 
 // 获取indexDBmock数据
-const getE = () => {
-  fetchE().then(res => {
-    console.log(res, 'mock')
-  })
-}
+// const getE = () => {
+//   fetchE().then(res => {
+//     console.log(res, 'mock')
+//   })
+// }
 onMounted(() => {
   // 本地json请求
   apiHomeList()
-  getE()
+  // getE()
 })
 // 国际化
 const { t } = useI18n()
@@ -50,13 +51,17 @@ const { t } = useI18n()
 
 </script>
 <template>
+  <div>
+    <!-- <CommonHeader></CommonHeader> -->
+  </div>
   <div></div>
-  <div></div>
+  <p>sss</p>
+  <button>sss</button>
   <div></div>
   <!-- <button @click="addDB('elephant')">add</button>
-      <button @click="delDB('elephant', 2)">del</button>
-      <button @click="findDB('elephant')">find</button>
-      <button @click="findOneDB('elephant', 3)">findOne</button> -->
+        <button @click="delDB('elephant', 2)">del</button>
+        <button @click="findDB('elephant')">find</button>
+        <button @click="findOneDB('elephant', 3)">findOne</button> -->
   <div>{{ t(`message.home`) }}</div>
 </template>
 

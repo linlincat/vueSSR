@@ -13,18 +13,15 @@ export default class DB {
     return new Promise((resolve, reject) => {
       // 数据库打开成功
       request.onsuccess = (event: any) => {
-        console.log("数据库打开成功", event);
         this.db = event.target.result;
         resolve(true);
       };
       // 数据库打开失败
       request.onerror = (event) => {
-        console.log("数据库打开失败");
         reject(event);
       };
       // 数据库升级成功
       request.onupgradeneeded = (event) => {
-        console.log("数据库升级成功", event);
         const { result }: any = event.target;
         // autoIncrement-是否自动递增 keypath-健值  result.createObjectStore
         const store = result.createObjectStore(storeName, {
@@ -33,13 +30,13 @@ export default class DB {
         });
         if (indexs && indexs.length > 0) {
           indexs.map((v) => {
-            // 1.索引的名称 2.索引的对象 3.unique-是否唯一
+            // 1.索引的名称 2.索引的对象 3.unique-是否唯一[如何设置唯一,索引不能重复便不能添加多个]
             store.createIndex(v, v, { unique: false });
           });
         }
         // 添加事务的回调
         store.transaction.oncomplete = (event: any) => {
-          console.log("数据库升级成功01");
+          // 判断是否升级成功
         };
       };
     });
@@ -52,15 +49,13 @@ export default class DB {
     const store = this.db
       .transaction([storeName], "readwrite")
       .objectStore(storeName);
-    // put 修改 add 新增
+    // put 修改 add 新增[包含主键的 这里对应的是 id]
     const request = store.put({ ...data, updateTime: new Date().getTime() });
     return new Promise((resolve, reject) => {
       request.onsuccess = (event: any) => {
-        console.log("添加成功");
         resolve(event);
       };
       request.onerror = (event: any) => {
-        console.log("添加失败");
         reject(event);
       };
     });
@@ -73,11 +68,9 @@ export default class DB {
     const request = store.delete(key);
     return new Promise((resolve, reject) => {
       request.onsuccess = (event: any) => {
-        console.log("数据删除成功");
         resolve(event);
       };
       request.onerror = (event: any) => {
-        console.log("数据删除失败");
         reject(event);
       };
     });
@@ -88,12 +81,9 @@ export default class DB {
     const request = store.getAll();
     return new Promise((resolve, reject) => {
       request.onsuccess = (event: any) => {
-        console.log(event);
-        console.log("查询某一条成功");
         resolve(event.target.result);
       };
       request.onerror = (event: any) => {
-        console.log("查询某一条失败");
         reject(event);
       };
     });
@@ -104,12 +94,9 @@ export default class DB {
     const request = store.get(key);
     return new Promise((resolve, reject) => {
       request.onsuccess = (event: any) => {
-        console.log(event);
-        console.log("查询数据成功");
         resolve(event.target.result);
       };
       request.onerror = (event: any) => {
-        console.log("查询数据失败");
         reject(event);
       };
     });
