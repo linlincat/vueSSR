@@ -9,6 +9,7 @@ import zhCn from "element-plus/es/locale/lang/zh-cn";
 import en from "element-plus/es/locale/lang/en";
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n'
+import CommonFooter from './components/layout/commonFooter.vue';
 // const value2 = ref('');
 const locale = ref(zhCn);
 /**
@@ -31,18 +32,18 @@ const changeLang = (lang: any) => {
   <!-- :locale ele组件国际化 -->
   <el-config-provider :locale="locale">
     <!-- 公共头部 -->
-    <CommonHeader @changeLang = "changeLang" />
+    <CommonHeader @changeLang="changeLang" />
     <!-- 主体 -->
-    <!-- <el-button @click="changeLang(zhCn)">中文</el-button>
-      <el-button @click="changeLang(en)">英文</el-button>
-      <el-button @click="() => router.push({ path: '/home' })">home</el-button>
-      <el-button @click="() => router.push({ path: '/myCenter' })">myCenter</el-button> -->
-    <router-view></router-view>
-
+    <div class="container">
+      <router-view></router-view>
+    </div>
     <!-- 公共底部 -->
+    <CommonFooter />
   </el-config-provider>
 </template>
 
 <style scoped lang="scss">
-
+.container {
+  min-height: calc(100vh - 160px);
+}
 </style>

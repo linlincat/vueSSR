@@ -1,6 +1,11 @@
+
 export default {
-  message: {
-    home: "home",
-    mine: "myCenter",
+  header: {
+    order: "center-order",
+    record: "record",
+    language: "language"
   },
+  footer: {
+    text: "public's footer"
+  }
 };

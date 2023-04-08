@@ -10,6 +10,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Aaa: typeof import('./src/components/common/aaa.vue')['default']
+    CommonFooter: typeof import('./src/components/layout/commonFooter.vue')['default']
     CommonHeader: typeof import('./src/components/layout/commonHeader.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']

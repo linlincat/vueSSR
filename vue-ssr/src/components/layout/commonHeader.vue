@@ -5,6 +5,10 @@ import { ref, defineEmits, defineProps, onMounted } from 'vue';
 import zhCn from "element-plus/es/locale/lang/zh-cn"
 import en from 'element-plus/es/locale/lang/en'
 
+import { useI18n, } from "vue-i18n";
+// 国际化
+const { t } = useI18n()
+
 onMounted(() => {
   toGetLanguage()
 })
@@ -51,12 +55,12 @@ function toGetLanguage() {
   <div class="common-header">
     <img class="logo" src="@/assets/imgs/layout/z01.jpg" alt="logo" />
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-      <el-menu-item index="orders">订单中心</el-menu-item>
-      <el-menu-item index="records">历史足迹</el-menu-item>
+      <el-menu-item index="orders">{{ t(`header.order`) }}</el-menu-item>
+      <el-menu-item index="records">{{ t(`header.record`) }}</el-menu-item>
       <el-sub-menu index="language">
-        <template #title>国际化切换</template>
+        <template #title>{{ t(`header.language`) }}</template>
         <el-menu-item index="zh">中文</el-menu-item>
-        <el-menu-item index="en">英文</el-menu-item>
+        <el-menu-item index="en">English</el-menu-item>
       </el-sub-menu>
       <el-menu-item index="avatar">
         <img class="avatar" src="@/assets/imgs/layout/z02.jpg" alt="center" />
@@ -65,5 +69,5 @@ function toGetLanguage() {
   </div>
 </template>
 <style scoped lang="scss">
-@import "@/assets/scss/layout/index.scss";
+@import "@/assets/scss/layout/headerAndFooter.scss";
 </style>
