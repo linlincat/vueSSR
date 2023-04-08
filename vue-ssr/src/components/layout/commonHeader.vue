@@ -6,8 +6,7 @@ import zhCn from "element-plus/es/locale/lang/zh-cn"
 import en from 'element-plus/es/locale/lang/en'
 
 onMounted(() => {
-  getLanguage()
-  saveLangeuage("lang")
+  toGetLanguage()
 })
 const activeIndex = ref("orders")
 const emit = defineEmits<{
@@ -15,11 +14,36 @@ const emit = defineEmits<{
 }>()
 function handleSelect(e: any) {
   if (e === 'zh') {
+    // 通知组件修改国际化
     emit('changeLang', zhCn)
+    // 本地保存国际化
+    toSaveLangeuage('zh')
   } else if (e === 'en') {
     emit('changeLang', en)
+    toSaveLangeuage('en')
   }
-  console.log(e)
+}
+// 保存国际化
+function toSaveLangeuage(lang: any) {
+  saveLangeuage(lang).then(res => {
+    const { success } = res;
+    success ? console.log('保存国际化语言成功') : console.log('保存国际化语言失败')
+  })
+}
+// 获取国际化
+function toGetLanguage() {
+  getLanguage().then(res => {
+    const { success, result } = res;
+    const { name } = result;
+    if (success) {
+      if (name === 'zh') {
+        // 通知组件修改国际化
+        emit('changeLang', zhCn)
+      } else if (name === 'en') {
+        emit('changeLang', en)
+      }
+    }
+  })
 }
 </script>
 

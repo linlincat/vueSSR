@@ -1,4 +1,5 @@
 import { http } from "@/utils/http";
+import { ElLoading } from "element-plus";
 import DB from "../utils/indexDB";
 import IndexDB from "../utils/indexDB";
 
@@ -16,9 +17,13 @@ export async function apiHomeList() {
 }
 // 设置语言包
 export async function saveLangeuage(lang: any) {
+  const loading = ElLoading.service({
+    lock: true,
+    background: "rgba(0, 0, 0, 0.1)",
+  });
+
   await db.openStore("lang", "id", ["name"]);
   const resultS: IResult = await db.getItem("lang", 1).then((res: any) => {
-    console.log(res, "this init get res");
     return {
       code: "200",
       message: "success",
@@ -26,7 +31,6 @@ export async function saveLangeuage(lang: any) {
       success: true,
     };
   });
-  console.log(resultS, "this init get res");
   // 做的是更新所以写死为true
   const { success } = resultS;
   let obj = {};
@@ -38,14 +42,24 @@ export async function saveLangeuage(lang: any) {
     obj = { name: lang };
   }
   const result = await db.updateItem("lang", obj).then((res: any) => {
+    setTimeout(() => {
+      loading.close();
+    }, 200);
     return { code: "200", message: "success", result: null, success: true };
   });
   return result;
 }
 // 获取语言包
 export async function getLanguage() {
+  const loading = ElLoading.service({
+    lock: true,
+    background: "rgba(0, 0, 0, 0.1)",
+  });
   await db.openStore("lang", "id", ["name"]);
   const result: IResult = await db.getItem("lang", 1).then((res) => {
+    setTimeout(() => {
+      loading.close();
+    }, 200);
     return {
       code: "200",
       message: "success",

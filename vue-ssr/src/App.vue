@@ -2,8 +2,8 @@
 import { useRouter } from 'vue-router'
 import CommonHeader from '@/components/layout/commonHeader.vue'
 /**
- * 官网提供的问题没有type类型描述
- * 引入国际化
+ * 官网提供的element-plus/es/dist/lang路径没有type类型描述
+ * 引入国际化element-plus/es/locale/lang
  */
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import en from "element-plus/es/locale/lang/en";
@@ -15,7 +15,7 @@ const locale = ref(zhCn);
  * locale是createI18n下的locale
  * locale.value是修改ele组件内部的国际化
  * localeLanguage修改的是自定义配置的国际化- 修改locale: "en|zh",
- * 在通过useI18n获取到message下的对应国际化信息git
+ * 在通过useI18n获取到message下的对应国际化信息
  */
 const { locale: localeLanguage } = useI18n();
 const changeLang = (lang: any) => {
