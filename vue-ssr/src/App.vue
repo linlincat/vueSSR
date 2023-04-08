@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import CommonHeader from '@/components/layout/commonHeader.vue'
 /**
  * 官网提供的element-plus/es/dist/lang路径没有type类型描述
@@ -21,10 +21,14 @@ const locale = ref(zhCn);
 const { locale: localeLanguage } = useI18n();
 const changeLang = (lang: any) => {
   locale.value = lang
+  // 进入页面拿到的是定义的默认语言,异步请求有延迟
+  // 子组件拿到的数据也是默认语言
   localeLanguage.value = lang.name
 }
 
-// const router = useRouter()
+// 定义的阶段route 拿到的fullPath是 ‘/’
+// 当页面组件加载完成后才能真正的拿到当前的路由路径
+const route = useRoute()
 </script>
 
 <template>
@@ -32,13 +36,13 @@ const changeLang = (lang: any) => {
   <!-- :locale ele组件国际化 -->
   <el-config-provider :locale="locale">
     <!-- 公共头部 -->
-    <CommonHeader @changeLang="changeLang" />
+    <CommonHeader v-show="route.fullPath.indexOf('login') === -1" @changeLang="changeLang" />
     <!-- 主体 -->
     <div class="container">
       <router-view></router-view>
     </div>
     <!-- 公共底部 -->
-    <CommonFooter />
+    <CommonFooter v-show="route.fullPath.indexOf('login') === -1" />
   </el-config-provider>
 </template>
 

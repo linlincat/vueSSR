@@ -6,6 +6,7 @@ import zhCn from "element-plus/es/locale/lang/zh-cn"
 import en from 'element-plus/es/locale/lang/en'
 
 import { useI18n, } from "vue-i18n";
+import router from '@/router';
 // 国际化
 const { t } = useI18n()
 
@@ -25,6 +26,10 @@ function handleSelect(e: any) {
   } else if (e === 'en') {
     emit('changeLang', en)
     toSaveLangeuage('en')
+  } else if (e === 'login') {
+    router.push({
+      name: 'login'
+    })
   }
 }
 // 保存国际化
@@ -64,6 +69,9 @@ function toGetLanguage() {
       </el-sub-menu>
       <el-menu-item index="avatar">
         <img class="avatar" src="@/assets/imgs/layout/z02.jpg" alt="center" />
+      </el-menu-item>
+      <el-menu-item index="login">
+        {{ t(`login.button`) }}/{{ t(`login.buttons`) }}
       </el-menu-item>
     </el-menu>
   </div>

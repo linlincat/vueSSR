@@ -4,6 +4,7 @@ import { apiHomeList } from '@/api/index'
 
 </script>
 <template>
+  ddd
 </template>
 
 <style lang="scss" scoped>
