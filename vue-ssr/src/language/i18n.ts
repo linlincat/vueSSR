@@ -4,7 +4,7 @@ import en from "./en";
 import zh from "./zh";
 
 const i18n = createI18n({
-  locale: "en",
+  locale: "zh",
   legacy: false, // 如果要支持compositionAPI，此项必须设置为false;
   allowComposition: true,// 允许组合式api
   globalInjection: true, // 全局注册$t方法

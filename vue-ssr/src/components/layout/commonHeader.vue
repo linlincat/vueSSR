@@ -1,17 +1,21 @@
 <script setup lang="ts">
 
-import { getLanguage, saveLangeuage } from '@/api/index'
-import { ref, defineEmits, defineProps, onMounted } from 'vue';
+import { getLanguage, IResult, saveLangeuage } from '@/api/index'
+import { ref, defineEmits, defineProps, onMounted, getCurrentInstance } from 'vue';
 import zhCn from "element-plus/es/locale/lang/zh-cn"
 import en from 'element-plus/es/locale/lang/en'
 
 import { useI18n, } from "vue-i18n";
 import router from '@/router';
+import { userLogout } from '@/api/login';
+
+const { proxy }: any = getCurrentInstance()
+const status = localStorage.getItem("useStatus")
 // 国际化
 const { t } = useI18n()
 
 onMounted(() => {
-  toGetLanguage()
+  // toGetLanguage()
 })
 const activeIndex = ref("orders")
 const emit = defineEmits<{
@@ -30,6 +34,8 @@ function handleSelect(e: any) {
     router.push({
       name: 'login'
     })
+  } else if (e === 'logout') {
+    doUserLogout()
   }
 }
 // 保存国际化
@@ -54,6 +60,19 @@ function toGetLanguage() {
     }
   })
 }
+function doUserLogout() {
+  userLogout().then((res: IResult) => {
+    const { success, message } = res
+    if (success) {
+      router.push({ name: 'login' })
+      proxy.$message.success(message)
+      localStorage.setItem("useStatus", "0")
+    }
+    else {
+      proxy.$message.error(message)
+    }
+  })
+}
 </script>
 
 <template>
@@ -67,10 +86,11 @@ function toGetLanguage() {
         <el-menu-item index="zh">中文</el-menu-item>
         <el-menu-item index="en">English</el-menu-item>
       </el-sub-menu>
-      <el-menu-item index="avatar">
-        <img class="avatar" src="@/assets/imgs/layout/z02.jpg" alt="center" />
-      </el-menu-item>
-      <el-menu-item index="login">
+      <el-sub-menu index="avatar" v-if="status === '1'">
+        <template #title> <img class="avatar" src="@/assets/imgs/layout/z02.jpg" alt="center" /></template>
+        <el-menu-item index="logout">退出</el-menu-item>
+      </el-sub-menu>
+      <el-menu-item index="login" v-else>
         {{ t(`login.button`) }}/{{ t(`login.buttons`) }}
       </el-menu-item>
     </el-menu>

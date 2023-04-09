@@ -7,7 +7,7 @@ export default class DB {
     this.dbName = dbName;
   }
   // 打开数据库
-  openStore(storeName: any, keyPath: any, indexs?: Array<string>) {
+  openStore(stores: any) {
     // window.indexedDB.open("", 1); 返回一个IDBOpenDBRequest对象
     const request = window.indexedDB.open(this.dbName);
     return new Promise((resolve, reject) => {
@@ -23,21 +23,28 @@ export default class DB {
       // 数据库升级成功
       request.onupgradeneeded = (event) => {
         const { result }: any = event.target;
-        // autoIncrement-是否自动递增 keypath-健值  result.createObjectStore
-        const store = result.createObjectStore(storeName, {
-          autoIncrement: true,
-          keyPath,
-        });
-        if (indexs && indexs.length > 0) {
-          indexs.map((v) => {
-            // 1.索引的名称 2.索引的对象 3.unique-是否唯一[如何设置唯一,索引不能重复便不能添加多个]
-            store.createIndex(v, v, { unique: false });
-          });
+        for (const storeName in stores) {
+          const { keyPath, indexs } = stores[storeName];
+          if (!result.objectStoreNames.contains(storeName)) {
+            const store = result.createObjectStore(storeName, {
+              autoIncrement: true,
+              keyPath,
+            });
+            if (indexs && indexs.length) {
+              indexs.map((v: string) => {
+                // 1.索引的名称 2.索引的对象 3.unique-是否唯一[如何设置唯一,索引不能重复便不能添加多个]
+                store.createIndex(v, v, { unique: false });
+              });
+            }
+            // autoIncrement-是否自动递增 keypath-健值  result.createObjectStore
+
+            // 添加事务的回调
+            store.transaction.oncomplete = (event: any) => {
+              // 判断是否升级成功
+              console.log("升级成功")
+            };
+          }
         }
-        // 添加事务的回调
-        store.transaction.oncomplete = (event: any) => {
-          // 判断是否升级成功
-        };
       };
     });
   }

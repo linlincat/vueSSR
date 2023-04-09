@@ -1,27 +1,33 @@
 <script setup lang='ts'>
 
-import { reactive, ref } from 'vue';
+import { reactive, ref, getCurrentInstance } from 'vue';
 import type { TabsPaneContext, FormInstance, FormRules } from 'element-plus'
 // import { useRouter, useRoute } from 'vue-router'
 import { useI18n, } from "vue-i18n";
+import { IResult } from '@/api';
+import { userLogin, userSign } from '@/api/login'
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
 // 国际化
+const { proxy }: any = getCurrentInstance();
 const { t } = useI18n()
 const activeName = ref("login")
 const loginText = ref(t(`login.button`))
 const ruleFormRef = ref<FormInstance>()
-  interface IruleFrom {
-  tel: string;
+interface IruleFrom {
+  mobile: string;
   password: string;
 }
 const ruleForm = reactive<IruleFrom>({
-  tel: '',
+  mobile: '',
   password: ''
 })
 const rules = reactive<FormRules>({
-  tel: [{ required: true, min: 11, max: 11, message: '请输入正确的手机号', trigger: 'blur' }],
+  mobile: [{ required: true, min: 11, max: 11, message: '请输入正确的手机号', trigger: 'blur' }],
   password: [{ required: true, message: '请输入正确的密码', trigger: 'blur' }],
 })
-// 
+// 切换登录页面的登录/注册按钮文本
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   if (tab.props.name === 'login') {
     loginText.value = t(`login.button`)
@@ -29,16 +35,48 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
     loginText.value = t(`login.buttons`)
   }
 }
-// 
+// 登录/注册提交
 const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
+      if (activeName.value === 'register') {
+        userRegister(ruleForm)
+      } else if (activeName.value === 'login') {
+        toRserLogin(ruleForm)
+      }
     } else {
       return false
     }
   })
 }
+
+// 注册
+function userRegister(params: IruleFrom) {
+  userSign(params).then((res: IResult) => {
+    const { success, message } = res
+    if (success) { proxy.$message.success(message) }
+    else {
+      proxy.$message.error(message)
+    }
+  })
+}
+
+// 登录
+function toRserLogin(params: IruleFrom) {
+  userLogin(params).then((res: IResult) => {
+    const { success, message, result } = res
+    if (success) {
+      localStorage.setItem('useStatus', result.status)
+      router.push({ name: 'home' })
+      proxy.$message.success(message)
+    }
+    else {
+      proxy.$message.error(message)
+    }
+  })
+}
+// 退出
 </script>
 <template>
   <div class="login_page">
@@ -48,8 +86,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
       <el-tab-pane :label="t(`login.topRight`)" name="register"></el-tab-pane>
     </el-tabs>
     <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules">
-      <el-form-item prop='tel'>
-        <el-input :placeholder="t(`login.pTop`)" v-model="ruleForm.tel" />
+      <el-form-item prop='mobile'>
+        <el-input :placeholder="t(`login.pTop`)" v-model="ruleForm.mobile" />
       </el-form-item>
       <el-form-item prop='password'>
         <el-input :placeholder="t(`login.pBottom`)" v-model="ruleForm.password" />

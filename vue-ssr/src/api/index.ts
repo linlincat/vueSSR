@@ -1,10 +1,10 @@
 import { http } from "@/utils/http";
 import { ElLoading } from "element-plus";
-import DB from "../utils/indexDB";
 import IndexDB from "../utils/indexDB";
+import DB from '../db'
 
 const db = new IndexDB("demo");
-interface IResult {
+export interface IResult {
   code: string;
   message: string;
   result: any;
@@ -22,7 +22,7 @@ export async function saveLangeuage(lang: any) {
     background: "rgba(0, 0, 0, 0.1)",
   });
 
-  await db.openStore("lang", "id", ["name"]);
+  await DB.indexDB.openStore({...DB.languageObjectStore,});
   const resultS: IResult = await db.getItem("lang", 1).then((res: any) => {
     return {
       code: "200",
@@ -55,7 +55,7 @@ export async function getLanguage() {
     lock: true,
     background: "rgba(0, 0, 0, 0.1)",
   });
-  await db.openStore("lang", "id", ["name"]);
+  await DB.indexDB.openStore({...DB.languageObjectStore,});
   const result: IResult = await db.getItem("lang", 1).then((res) => {
     setTimeout(() => {
       loading.close();
