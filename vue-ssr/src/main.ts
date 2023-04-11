@@ -5,7 +5,8 @@ import "element-plus/dist/index.css";
 import router from "./router";
 import i18n from "./language/i18n";
 import DB from "./db";
-console.log({...DB.languageObjectStore}, 'lll')
+import { store } from './store'
+
 router.beforeEach((to, from, next) => {
   DB.indexDB
     .openStore({
@@ -19,6 +20,7 @@ router.beforeEach((to, from, next) => {
 });
 
 const app = createApp(App);
+app.use(store);
 app.use(ElementPlus);
 app.use(router);
 app.use(i18n);

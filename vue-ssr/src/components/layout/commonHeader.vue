@@ -2,6 +2,7 @@
 
 import { getLanguage, IResult, saveLangeuage } from '@/api/index'
 import { ref, defineEmits, defineProps, onMounted, getCurrentInstance } from 'vue';
+import { useStore } from 'vuex';
 import zhCn from "element-plus/es/locale/lang/zh-cn"
 import en from 'element-plus/es/locale/lang/en'
 
@@ -11,6 +12,7 @@ import { userLogout } from '@/api/login';
 
 const { proxy }: any = getCurrentInstance()
 const status = localStorage.getItem("useStatus")
+const store = useStore()
 // 国际化
 const { t } = useI18n()
 
@@ -73,10 +75,11 @@ function doUserLogout() {
     }
   })
 }
-</script>
+</script> 
 
 <template>
   <div class="common-header">
+    {{ store.state.count }}
     <img class="logo" src="@/assets/imgs/layout/z01.jpg" alt="logo" />
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
       <el-menu-item index="orders">{{ t(`header.order`) }}</el-menu-item>

@@ -1,32 +1,16 @@
 <script setup lang='ts'>
-
-import { reactive, ref, getCurrentInstance } from 'vue';
-import type { TabsPaneContext, FormInstance, FormRules } from 'element-plus'
-// import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from "vue-router";
+import type { TabsPaneContext, FormInstance } from 'element-plus'
+import useFromProperties from '@/composables/login/useFormProperties'
+import useFormOperates from '@/composables/login/useFormOperates'
 import { useI18n, } from "vue-i18n";
-import { IResult } from '@/api';
-import { userLogin, userSign } from '@/api/login'
-import { useRouter } from 'vue-router';
 
-const router = useRouter()
+const router = useRouter();
 // 国际化
-const { proxy }: any = getCurrentInstance();
 const { t } = useI18n()
-const activeName = ref("login")
-const loginText = ref(t(`login.button`))
-const ruleFormRef = ref<FormInstance>()
-interface IruleFrom {
-  mobile: string;
-  password: string;
-}
-const ruleForm = reactive<IruleFrom>({
-  mobile: '',
-  password: ''
-})
-const rules = reactive<FormRules>({
-  mobile: [{ required: true, min: 11, max: 11, message: '请输入正确的手机号', trigger: 'blur' }],
-  password: [{ required: true, message: '请输入正确的密码', trigger: 'blur' }],
-})
+const { ruleForm, loginText, activeName, ruleFormRef, rules } = useFromProperties(t)
+const { userRegister, userLoginFn } = useFormOperates(router, ruleForm)
+
 // 切换登录页面的登录/注册按钮文本
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   if (tab.props.name === 'login') {
@@ -43,7 +27,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
       if (activeName.value === 'register') {
         userRegister(ruleForm)
       } else if (activeName.value === 'login') {
-        toRserLogin(ruleForm)
+        userLoginFn(ruleForm)
       }
     } else {
       return false
@@ -51,32 +35,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
   })
 }
 
-// 注册
-function userRegister(params: IruleFrom) {
-  userSign(params).then((res: IResult) => {
-    const { success, message } = res
-    if (success) { proxy.$message.success(message) }
-    else {
-      proxy.$message.error(message)
-    }
-  })
-}
-
-// 登录
-function toRserLogin(params: IruleFrom) {
-  userLogin(params).then((res: IResult) => {
-    const { success, message, result } = res
-    if (success) {
-      localStorage.setItem('useStatus', result.status)
-      router.push({ name: 'home' })
-      proxy.$message.success(message)
-    }
-    else {
-      proxy.$message.error(message)
-    }
-  })
-}
-// 退出
 </script>
 <template>
   <div class="login_page">
