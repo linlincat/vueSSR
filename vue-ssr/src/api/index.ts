@@ -11,6 +11,7 @@ export interface IResult {
   success: boolean;
 }
 
+const stroeName = Object.keys(DB.languageObjectStore)[0];
 export async function apiHomeList() {
   const res = await http.httpGet("../../public/json", {});
   console.log(res);
@@ -22,8 +23,7 @@ export async function saveLangeuage(lang: any) {
     background: "rgba(0, 0, 0, 0.1)",
   });
 
-  await DB.indexDB.openStore({...DB.languageObjectStore,});
-  const resultS: IResult = await db.getItem("lang", 1).then((res: any) => {
+  const resultS: IResult = await db.getItem(stroeName, 1).then((res: any) => {
     return {
       code: "200",
       message: "success",
@@ -41,7 +41,7 @@ export async function saveLangeuage(lang: any) {
     // 无数据新增
     obj = { name: lang };
   }
-  const result = await db.updateItem("lang", obj).then((res: any) => {
+  const result = await db.updateItem(stroeName, obj).then((res: any) => {
     setTimeout(() => {
       loading.close();
     }, 200);
@@ -56,7 +56,7 @@ export async function getLanguage() {
     background: "rgba(0, 0, 0, 0.1)",
   });
   await DB.indexDB.openStore({...DB.languageObjectStore,});
-  const result: IResult = await db.getItem("lang", 1).then((res) => {
+  const result: IResult = await db.getItem(stroeName, 1).then((res) => {
     setTimeout(() => {
       loading.close();
     }, 200);

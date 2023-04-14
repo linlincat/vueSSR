@@ -9,8 +9,9 @@ export default class DB {
   // 打开数据库
   openStore(stores: any) {
     // window.indexedDB.open("", 1); 返回一个IDBOpenDBRequest对象
-    const request = window.indexedDB.open(this.dbName);
+    const request = window.indexedDB.open(this.dbName, 2);
     return new Promise((resolve, reject) => {
+      console.log("打开数据库")
       // 数据库打开成功
       request.onsuccess = (event: any) => {
         this.db = event.target.result;
