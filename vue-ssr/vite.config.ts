@@ -1,8 +1,8 @@
 import { defineConfig } from "vite";
 // 按需引入
-import AutoImport from "unplugin-auto-import/vite";
-import Components from "unplugin-vue-components/vite";
-import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+// import AutoImport from "unplugin-auto-import/vite";  // 服务端渲染到时候需要注释
+// import Components from "unplugin-vue-components/vite";  // 服务端渲染到时候需要注释
+// import { ElementPlusResolver } from "unplugin-vue-components/resolvers";  // 服务端渲染到时候需要注释
 
 import { resolve } from "path";
 import vue from "@vitejs/plugin-vue";
@@ -11,14 +11,14 @@ import vue from "@vitejs/plugin-vue";
 export default defineConfig({
   plugins: [
     vue(),
-    // 按需引入
-    AutoImport({
-      resolvers: [ElementPlusResolver()],
-    }),
-    // 按需引入
-    Components({
-      resolvers: [ElementPlusResolver()],
-    }),
+    // 按需引入   // 服务端渲染到时候需要注释
+    // AutoImport({
+    //   resolvers: [ElementPlusResolver()], 
+    // }),
+    // 按需引入   // 服务端渲染到时候需要注释
+    // Components({
+    //   resolvers: [ElementPlusResolver()],
+    // }),
   ],
 
   resolve: {
@@ -35,7 +35,7 @@ export default defineConfig({
       scss: {
         // 全局scss的配置,也可以在根页面中app.vue中全局引入
         additionalData:
-          '@import "@/assets/scss/variable.scss"; @import "@/assets/scss/main.scss";',
+          '@import "@/assets/scss/variable.scss"; @import "@/assets/scss/main.scss";', 
       },
     },
   },

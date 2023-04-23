@@ -39,8 +39,8 @@ const store = useStore()
   <!-- 国际化标签 -->
   <!-- :locale ele组件国际化 -->
   <el-config-provider :locale="store.state.locale">
-    <!-- 公共头部 -->
-    <CommonHeader v-show="route.fullPath.indexOf('login') === -1" @changeLang="changeLang" />
+    <!-- 公共头部 --> 
+    <CommonHeader v-show="route.fullPath.indexOf('login') === -1" />
     <!-- 主体 -->
     <div class="container">
       <router-view></router-view>
