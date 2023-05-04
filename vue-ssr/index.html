@@ -9,6 +9,10 @@
   <body>
     <div id="app"><!--ssr-outlet--></div>
     <script type="module" src="/src/entry-client.ts"></script>
+    <script>
+      // 服务端渲染的时候会把state放入进来
+      window.__INITIAL_STATE__ = '<!--vuex-state-->'
+    </script>
   </body>
   <style>
     body,html,p {

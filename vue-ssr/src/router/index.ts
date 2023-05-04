@@ -1,9 +1,14 @@
-import home from "@/views/home/index.vue";  // tsconfig.json配置别名编辑器不报错,在vite.config.ts配置运行不报错
+import home from "@/views/home/index.vue"; // tsconfig.json配置别名编辑器不报错,在vite.config.ts配置运行不报错
 import myCenter from "@/views/myCenter/index.vue";
 import login from "@/views/login/index.vue";
-import { createMemoryHistory, createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import {
+  createMemoryHistory,
+  createRouter,
+  createWebHistory,
+  RouteRecordRaw,
+} from "vue-router";
 
-const routes:RouteRecordRaw[] = [
+const routes: RouteRecordRaw[] = [
   {
     path: "/home",
     name: "home",
@@ -33,9 +38,9 @@ const routes:RouteRecordRaw[] = [
   },
 ];
 
-const router = createRouter({
-  history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(), // 客户端
-  routes,
-});
-
-export default router;
+export function createSSRRouter() {
+  return createRouter({
+    history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(), // 客户端
+    routes,
+  });
+}

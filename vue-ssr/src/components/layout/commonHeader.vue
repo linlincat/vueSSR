@@ -6,13 +6,14 @@ import zhCn from "element-plus/es/locale/lang/zh-cn"
 import en from 'element-plus/es/locale/lang/en'
 
 import { useI18n, } from "vue-i18n";
-import router from '@/router';
+import { useRouter } from 'vue-router';
 import { userLogout } from '@/api/login';
 import { useStore } from '@/store';
 
 
 const { proxy }: any = getCurrentInstance()
 const store = useStore()
+const router = useRouter()
 
 onMounted(() => {
   // 不管用,虽然能改变执行顺序,但是这个时候没有创建打开数据库,直接调用方法是提示没有改方法的;

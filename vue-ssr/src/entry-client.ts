@@ -1,8 +1,11 @@
 // 应用到浏览器渲染
 import { createApp } from "./main";
 import DB from "./db";
-
-const { app, router } = createApp();
+const { app, router, store } = createApp();
+if (window.__INITIAL_STATE__) {
+  // 如果服务端渲染的时候赋予来值,用来同步到客户端中
+  store.replaceState(window.__INITIAL_STATE__);
+}
 router.beforeEach((to, from, next) => {
   DB.indexDB
     .openStore({
