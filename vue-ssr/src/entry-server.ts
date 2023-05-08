@@ -8,9 +8,11 @@ export async function render(url: string) {
   await router.isReady();
   //匹配到的所有路由组件
   const matchHedComponents = router.currentRoute.value.matched.flatMap(
-    (record) => Object.values(record.components)
+    (record) => Object.values(record.components)   // console.log(record,'------')
   );
+  console.log(matchHedComponents,"matchHedComponents====")
   await Promise.all(
+    // asyncData方法执行成功后要有返回,Promise.all都返回成功/活有败后才能执行
     matchHedComponents.map((Component: any) => {
       // 判断组件中是否有asyncData方法
       if (Component.asyncData) {

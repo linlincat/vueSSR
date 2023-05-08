@@ -31,6 +31,8 @@ export default function useFormOperates(router: Router, params: any) {
         // localStorage.setItem("useStatus", result.status);
         store.commit("setUserStatus", status)
         router.push({ name: "home" });
+        // 用来修复登录后页面没有加载数据的问题 window.location.href = '/home'
+        
         proxy.$message.success(message);
       } else {
         proxy.$message.error(message);

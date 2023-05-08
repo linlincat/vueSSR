@@ -49,6 +49,7 @@ async function createServer() {
         //    你的 ESM 源码使之可以在 Node.js 中运行！无需打包
         //    并提供类似 HMR 的根据情况随时失效。
         render = (await vite.ssrLoadModule("/src/entry-server.ts")).render;
+
       } else {
         // 1. 读取 index.html
         template = fs.readFileSync(
@@ -56,8 +57,9 @@ async function createServer() {
           "utf-8"
         );
         // 2.加载服务器入口。
-        render = import("./dist/server/entry-server.js").render;
-        // render = require("./dist/server/entry-server.js").render;
+        // render = import("./dist/server/entry-server.js").render;
+        render = (await import('./dist/server/entry-server.js')).render
+        // render = require('./dist/server/entry-server.js').render
       }
 
       // 4. 渲染应用的 HTML。这假设 entry-server.js 导出的 `render`
