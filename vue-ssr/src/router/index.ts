@@ -1,6 +1,6 @@
-import home from "@/views/home/index.vue"; // tsconfig.json配置别名编辑器不报错,在vite.config.ts配置运行不报错
-import myCenter from "@/views/myCenter/index.vue";
-import login from "@/views/login/index.vue";
+const home = () => import("@/views/home/homeIndex.vue"); // tsconfig.json配置别名编辑器不报错,在vite.config.ts配置运行不报错
+const myCenter = () => import("@/views/myCenter/myCenterIndex.vue");
+const login = () => import("@/views/login/loginIndex.vue");
 import {
   createMemoryHistory,
   createRouter,
