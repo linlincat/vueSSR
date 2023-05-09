@@ -8,6 +8,9 @@ export interface AllStateTypes {
   locale: any;
   userStatus: number;
   listData: any[];
+  pageNo: number;
+  pageSize: number;
+  total: number;
 }
 
 export const key: InjectionKey<Store<AllStateTypes>> = Symbol();
@@ -21,6 +24,9 @@ export function createSSRStore() {
       locale: null,
       userStatus: 0,
       listData: [],
+      pageNo: 1,
+      pageSize: 6,
+      total: 0,
     },
 
     mutations: {
