@@ -1,6 +1,6 @@
 // 在服务端渲染
 import { basename } from "node:path";
-import { createApp } from "./main";
+import { createApp, asyncDatgaFilter } from "./main";
 import { renderToString } from "vue/server-renderer";
 
 export async function render(url: string, manifest: any) {
@@ -11,52 +11,20 @@ export async function render(url: string, manifest: any) {
   const matchHedComponents = router.currentRoute.value.matched.flatMap(
     (record) => Object.values(record.components) // console.log(record,'------')
   );
-  await Promise.all(
-    // asyncData方法执行成功后要有返回,Promise.all都返回成功/活有败后才能执行
-    matchHedComponents.map((Component: any) => {
-      // 判断组件中是否有asyncData方法
-      if (Component.asyncData) {
-        return Component.asyncData({
-          store,
-          route: router.currentRoute,
-        });
-      }
-    })
-  );
-  const ctx:any = {}
+  await asyncDatgaFilter(matchHedComponents, store, router.currentRoute);
+  const ctx: any = {};
 
-  const appHtml = await renderToString(app, ctx)
+  const appHtml = await renderToString(app, ctx);
   const state = store.state;
   if (import.meta.env.PROD) {
-    const preloadLinks = renderPreloadLinks(ctx.modules, manifest)
+    const preloadLinks = renderPreloadLinks(ctx.modules, manifest);
     return { appHtml, state, preloadLinks };
   } else {
     return { appHtml, state };
   }
 
   function renderPreloadLinks(modules: any, manifest: any) {
-    console.log(modules, "-------------------modules")
-    // let links = "";
-    // const seen = new Set();
-    // modules.forEach((id: any) => {
-    //   const files = manifest[id];
-    //   if (files) {
-    //     files.forEach((file: any) => {
-    //       if (!seen.has(file)) {
-    //         seen.add(file);
-    //         const filename = basename(file);
-    //         if (manifest[filename]) {
-    //           for (const depFile of manifest[filename]) {
-    //             links += renderPreloadLink(depFile);
-    //             seen.add(depFile);
-    //           }
-    //         }
-    //         links += renderPreloadLink(file);
-    //       }
-    //     });
-    //   }
-    // });
-    // return links;
+    console.log(modules, "-------------------modules");
     let links = "";
     modules.forEach((id: any) => {
       const files = manifest[id];

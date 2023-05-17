@@ -1,5 +1,5 @@
 // 应用到浏览器渲染
-import { createApp } from "./main";
+import { createApp, asyncDatgaFilter } from "./main";
 import DB from "./db";
 const { app, router, store } = createApp();
 if (window.__INITIAL_STATE__) {
@@ -13,7 +13,7 @@ router.beforeEach((to, from, next) => {
       ...DB.userObjectStore,
     })
     .then((res) => {
-      console.log("初始化成功");
+      console.log("初始化成功", res);
       // 公共头部先去获取里接口,这个时候main里的数据库还没有,所以会报错,是因为这个时候还没有库
       next();
     });
@@ -34,18 +34,19 @@ router.isReady().then(() => {
     if (!actived.length) {
       return next();
     }
-    Promise.all(
-      // asyncData方法执行成功后要有返回,Promise.all都返回成功/活有败后才能执行
-      actived.map((Component: any) => {
-        // 判断组件中是否有asyncData方法
-        if (Component.asyncData) {
-          return Component.asyncData({
-            store,
-            route: router.currentRoute,
-          });
-        }
-      })
-    ).then(() => {
+    // Promise.all(
+    //   // asyncData方法执行成功后要有返回,Promise.all都返回成功/或有败后才能执行
+    //   actived.map((Component: any) => {
+    //     // 判断组件中是否有asyncData方法
+    //     if (Component.asyncData) {
+    //       return Component.asyncData({
+    //         store,
+    //         route: router.currentRoute,
+    //       });
+    //     }
+    //   })
+    // )
+    asyncDatgaFilter(actived, store, router.currentRoute).then(() => {
       next();
     });
   });

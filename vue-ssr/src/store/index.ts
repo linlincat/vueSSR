@@ -26,7 +26,7 @@ export function createSSRStore() {
       listData: [],
       pageNo: 1,
       pageSize: 6,
-      total: 0,
+      total:0
     },
 
     mutations: {

@@ -6,19 +6,20 @@ import serveStatic from "serve-static";
 import { createServer as createViteServer } from "vite";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const resolve = (p) => path.resolve(__dirname, p)
+const resolve = (p) => path.resolve(__dirname, p);
 
 const isProd = process.env.NODE_ENV == "production";
 async function createServer() {
   const app = express();
   let template;
   let render;
+  let html;
 
   const manifest = isProd
     ? JSON.parse(
-        fs.readFileSync(resolve('dist/client/ssr-manifest.json'), 'utf-8'),
+        fs.readFileSync(resolve("dist/client/ssr-manifest.json"), "utf-8")
       )
-    : {}
+    : {};
 
   // 以中间件模式创建 Vite 应用，这将禁用 Vite 自身的 HTML 服务逻辑
   // 并让上级服务器接管控制
@@ -56,7 +57,6 @@ async function createServer() {
         //    你的 ESM 源码使之可以在 Node.js 中运行！无需打包
         //    并提供类似 HMR 的根据情况随时失效。
         render = (await vite.ssrLoadModule("/src/entry-server.ts")).render;
-
       } else {
         // 1. 读取 index.html
         template = fs.readFileSync(
@@ -65,7 +65,7 @@ async function createServer() {
         );
         // 2.加载服务器入口。
         // render = import("./dist/server/entry-server.js").render;
-        render = (await import('./dist/server/entry-server.js')).render
+        render = (await import("./dist/server/entry-server.js")).render;
         // render = require('./dist/server/entry-server.js').render
       }
 
@@ -75,11 +75,17 @@ async function createServer() {
       const { appHtml, state, preloadLinks } = await render(url, manifest);
 
       // 5. 注入渲染后的应用程序 HTML 到模板中。
-      const html = template
-      .replace(`<!--proload-links-->`, preloadLinks)
-      .replace(`<!--ssr-outlet-->`, appHtml)
-        .replace('\'<!--vuex-state-->\'', JSON.stringify(state));
-
+      console.log(preloadLinks, "===preloadLinks");
+      if (isProd) {
+         html = template
+          .replace(`<!--proload-links-->`, preloadLinks)
+          .replace(`<!--ssr-outlet-->`, appHtml)
+          .replace("'<!--vuex-state-->'", JSON.stringify(state));
+      } else {
+         html = template
+          .replace(`<!--ssr-outlet-->`, appHtml)
+          .replace("'<!--vuex-state-->'", JSON.stringify(state));
+      }
       // 6. 返回渲染后的 HTML。
       res.status(200).set({ "Content-Type": "text/html" }).end(html);
     } catch (e) {

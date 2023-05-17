@@ -1,48 +1,53 @@
 <script setup lang="ts">
+import { getLanguage, IResult } from "@/api/index";
+import {
+  ref,
+  defineEmits,
+  defineProps,
+  onMounted,
+  getCurrentInstance,
+} from "vue";
+import zhCn from "element-plus/es/locale/lang/zh-cn";
+import en from "element-plus/es/locale/lang/en";
 
-import { getLanguage, IResult } from '@/api/index'
-import { ref, defineEmits, defineProps, onMounted, getCurrentInstance } from 'vue';
-import zhCn from "element-plus/es/locale/lang/zh-cn"
-import en from 'element-plus/es/locale/lang/en'
+import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
+import { userLogout } from "@/api/login";
+import { useStore } from "@/store";
 
-import { useI18n, } from "vue-i18n";
-import { useRouter } from 'vue-router';
-import { userLogout } from '@/api/login';
-import { useStore } from '@/store';
-
-
-const { proxy }: any = getCurrentInstance()
-const store = useStore()
-const router = useRouter()
+const { proxy }: any = getCurrentInstance();
+const store = useStore();
+const router = useRouter();
 
 onMounted(() => {
   // 不管用,虽然能改变执行顺序,但是这个时候没有创建打开数据库,直接调用方法是提示没有改方法的;
   // setTimeout(()=>{toGetLanguage()},2000)
-})
-const activeIndex = ref("orders")
+  toGetLanguage();
+});
+const activeIndex = ref("orders");
 const emit = defineEmits<{
-  (e: 'changeLang', lang: any): void
-}>()
+  (e: "changeLang", lang: any): void;
+}>();
 const { t, locale: localeLanguage } = useI18n();
 function handleSelect(e: any) {
-  if (e === 'zh') {
+  if (e === "zh") {
     // 通知组件修改国际化
     // emit('changeLang', zhCn)
     // 本地保存国际化
-    store.dispatch("toSaveLangeuage", zhCn)
-    localeLanguage.value = e
+    store.dispatch("toSaveLangeuage", zhCn);
+    localeLanguage.value = e;
     // toSaveLangeuage('zh')
-  } else if (e === 'en') {
+  } else if (e === "en") {
     // emit('changeLang', en)
     // toSaveLangeuage('en')
-    store.dispatch("toSaveLangeuage", en)
-    localeLanguage.value = e
-  } else if (e === 'login') {
+    store.dispatch("toSaveLangeuage", en);
+    localeLanguage.value = e;
+  } else if (e === "login") {
     router.push({
-      name: 'login'
-    })
-  } else if (e === 'logout') {
-    doUserLogout()
+      name: "login",
+    });
+  } else if (e === "logout") {
+    doUserLogout();
   }
 }
 // 保存国际化
@@ -54,39 +59,51 @@ function handleSelect(e: any) {
 // }
 // 获取国际化
 function toGetLanguage() {
-  getLanguage().then(res => {
+  getLanguage().then((res) => {
     const { success, result } = res;
-    const { name } = result;
+    const { name } = result || {};
+    console.log(res, "llll");
     if (success) {
-      if (name === 'zh') {
+      if (name === "zh") {
         // 通知组件修改国际化
-        emit('changeLang', zhCn)
-      } else if (name === 'en') {
-        emit('changeLang', en)
+        // emit('changeLang', zhCn)
+        store.dispatch("toSaveLangeuage", zhCn);
+        localeLanguage.value = name;
+      } else if (name === "en") {
+        store.dispatch("toSaveLangeuage", en);
+        localeLanguage.value = name;
+        // emit('changeLang', en)
+      } else {
+        store.dispatch("toSaveLangeuage", en);
+        localeLanguage.value = "en";
       }
     }
-  })
+  });
 }
 function doUserLogout() {
   userLogout().then((res: IResult) => {
-    const { success, message } = res
+    const { success, message } = res;
     if (success) {
-      router.push({ name: 'login' })
-      proxy.$message.success(message)
+      router.push({ name: "login" });
+      proxy.$message.success(message);
       // localStorage.setItem("useStatus", "0")
-      store.commit("setUserStatus", 0)
+      store.commit("setUserStatus", 0);
+    } else {
+      proxy.$message.error(message);
     }
-    else {
-      proxy.$message.error(message)
-    }
-  })
+  });
 }
-</script> 
+</script>
 
 <template>
   <div class="common-header">
     <img class="logo" src="@/assets/imgs/layout/z01.jpg" alt="logo" />
-    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+    <el-menu
+      :default-active="activeIndex"
+      class="el-menu-demo"
+      mode="horizontal"
+      @select="handleSelect"
+    >
       <el-menu-item index="orders">{{ t(`header.order`) }}</el-menu-item>
       <el-menu-item index="records">{{ t(`header.record`) }}</el-menu-item>
       <el-sub-menu index="language">
@@ -95,7 +112,9 @@ function doUserLogout() {
         <el-menu-item index="en">English</el-menu-item>
       </el-sub-menu>
       <el-sub-menu index="avatar" v-if="store.state.userStatus === 1">
-        <template #title> <img class="avatar" src="@/assets/imgs/layout/z02.jpg" alt="center" /></template>
+        <template #title>
+          <img class="avatar" src="@/assets/imgs/layout/z02.jpg" alt="center"
+        /></template>
         <el-menu-item index="logout">退出</el-menu-item>
       </el-sub-menu>
       <el-menu-item index="login" v-else>
